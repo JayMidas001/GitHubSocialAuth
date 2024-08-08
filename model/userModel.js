@@ -17,11 +17,10 @@ const socialSchema = new mongoose.Schema({
     password:{
         type: String
     },
-    isVerified:{
-        type: String,
-        require: true
-    },
     profilePicture:{
+        type: String
+    },
+    provider:{
         type: String
     }
 },{timestamps: true})

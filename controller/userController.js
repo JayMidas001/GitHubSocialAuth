@@ -42,15 +42,14 @@ const extractInfo = async(req, res)=>{
         return res.redirect(`/api/v1/homepage`)
       }else{
       const create = new socialModel({
-        firstName: req.user._json.given_name,
-        lastName: req.user._json.family_name,
+        firstName: req.user._json.name.split(' ')[0],
+        lastName: req.user._json.name.split(' ')[1],
         email: req.user._json.email,
-        profilePicture: req.user._json.picture,
-        isVerified: req.user._json.email_verified,
+        profilePicture: req.user._json.avatar_url,
         provider: req.user.provider
       })
       await create.save()
-      res.status(201).json(`Information extracted successfully.`, create)}
+      res.status(201).json({message:`Information extracted successfully.`, data:create})}
     } catch (error) {
         res.status(500).json(error.message)
     }
