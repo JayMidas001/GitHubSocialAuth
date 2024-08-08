@@ -17,9 +17,6 @@ app.use(session({
   //cookie: { secure: true }
 }))
 
-app.use(passport.initialize())
-app.use(passport.session())
-
 
 passport.use(new GitHubStrategy({
     clientID: process.env.GitHub_clientID,
@@ -27,12 +24,11 @@ passport.use(new GitHubStrategy({
     callbackURL: process.env.GitHub_callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
-      // Assuming `user` is retrieved from the database or created
-      User.findOrCreate({ githubId: profile.id }, function (err, user) {
-        return done(err, user);
-      });
-  })
-);
+      console.log('Callback function executed');
+      return done(null, profile);
+  }
+));
+
 
 
 // Serialize user into the sessions
@@ -46,6 +42,10 @@ passport.deserializeUser((user, done) => {
      console.log('Deserializing user:', user);
      done(null, user);
    });
+   
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 app.use('/api/v1/', router)
 

@@ -10,13 +10,14 @@ router.get(`/homepage`, homePage)
 router.get(`/signupwithgithub`, socialAccount)
 
 router.get('/auth/github', passport.authenticate('github', 
-    { scope: [ 'email','profile' ] }), (req, res)=>{
-        console.log(req.user);
-    });
+    { scope: [ 'email', 'profile' ] }));
 
-router.get('/github/callback', passport.authenticate('github', 
-  { successRedirect:`/api/v1/success/signup`,
+router.get('/auth/github/callback', passport.authenticate('github', 
+  { successRedirect: '/api/v1/success/signup',
     failureRedirect: '/homepage' }));
+
+//router.get('/auth/github/callback', (req, res) => {
+    //res.send('GitHub callback route is working');});
 
 router.get(`/success/signup`, extractInfo)
 
